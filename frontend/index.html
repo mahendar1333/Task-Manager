@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- 🔔 IN-APP NOTIFICATION CONTAINER -->
+<div id="notify-container"></div>
+
+<div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">TM</div>
+            <h2>Task Manager</h2>
+        </div>
+
+        <nav class="menu">
+            <button onclick="showLogin()" class="menu-btn">Login</button>
+            <button onclick="showRegister()" class="menu-btn">Register</button>
+            <button onclick="showTasksPage()" class="menu-btn">My Tasks</button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p class="sidebar-label">LOGGED IN AS</p>
+            <p id="sidebar-user" class="sidebar-username">Guest</p>
+            <button onclick="logout()" class="sidebar-logout">Logout</button>
+            <p class="sidebar-tagline">Stay organized. Stay ahead.</p>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT PAGE ================= -->
+    <main class="main">
+
+        <!-- LOGIN PAGE -->
+        <section id="auth-section" class="page-section">
+            <h1 class="page-heading">
+                Welcome back <span class="wave">👋</span>
+            </h1>
+            <p class="page-subtitle">Login to manage your tasks.</p>
+
+            <div class="panel">
+                <h2>Login</h2>
+
+                <input id="login-email" type="email" placeholder="Email" />
+                <input id="login-password" type="password" placeholder="Password" />
+
+                <button onclick="login()" class="primary-btn full">Login</button>
+
+                <p>Don't have an account?</p>
+                <button onclick="showRegister()" class="secondary-btn full">
+                    Create an account
+                </button>
+            </div>
+        </section>
+
+        <!-- REGISTER PAGE -->
+        <section id="register-section" class="page-section hidden">
+            <h1 class="page-heading">Create your account</h1>
+            <p class="page-subtitle">Sign up to start tracking your work.</p>
+
+            <div class="panel">
+                <h2>Create Account</h2>
+
+                <input id="reg-name" type="text" placeholder="Name" />
+                <input id="reg-email" type="email" placeholder="Email" />
+                <input id="reg-phone" type="text" placeholder="Phone" />
+                <input id="reg-password" type="password" placeholder="Password" />
+
+                <button onclick="register()" class="primary-btn full">Register</button>
+
+                <p>Already have an account?</p>
+                <button onclick="showLogin()" class="secondary-btn full">
+                    Login
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TASK DASHBOARD ================= -->
+        <section id="task-section" class="page-section hidden">
+
+            <header class="tasks-header">
+                <h1 class="page-heading">Task Dashboard</h1>
+                <p class="page-subtitle">
+                    Welcome, <span id="welcome-user">User</span> — stay on top of your work.
+                </p>
+            </header>
+
+            <!-- ======== OVERVIEW CARDS (Clickable) ======== -->
+            <section class="overview-grid">
+
+                <div class="overview-card total" onclick="showAllTasks()">
+                    <p class="overview-label">Total Tasks</p>
+                    <p id="stat-total" class="overview-value">0</p>
+                </div>
+
+                <div class="overview-card pending" onclick="showPendingTasks()">
+                    <p class="overview-label">Pending</p>
+                    <p id="stat-pending" class="overview-value">0</p>
+                </div>
+
+                <div class="overview-card completed" onclick="showCompletedTasks()">
+                    <p class="overview-label">Completed</p>
+                    <p id="stat-completed" class="overview-value">0</p>
+                </div>
+
+                <div class="overview-card upcoming" onclick="showUpcomingTasks()">
+                    <p class="overview-label">Upcoming</p>
+                    <p id="stat-upcoming" class="overview-value">0</p>
+                </div>
+
+            </section>
+
+            <!-- ======== CREATE TASK AREA ======== -->
+            <div class="create-task-box">
+                <h3>Create Task</h3>
+
+                <input id="task-title" type="text" placeholder="Title" />
+                <input id="task-desc" type="text" placeholder="Description" />
+
+                <div class="create-row">
+                    <div class="create-field">
+                        <label>Due date & time</label>
+                        <input id="task-due" type="datetime-local">
+                    </div>
+
+                    <div class="create-field">
+                        <label>Reminder</label>
+                        <input id="task-reminder" type="datetime-local">
+                    </div>
+                </div>
+
+                <button onclick="createTask()" class="primary-btn full">Add Task</button>
+            </div>
+
+            <!-- ======== TASK LIST ======== -->
+            <div class="tasks-list-header">
+                <h3>Your Tasks</h3>
+                <span id="tasks-count" class="tasks-count">0 tasks</span>
+            </div>
+
+            <div id="task-list" class="task-list"></div>
+
+        </section>
+    </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="edit-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Edit Task</h3>
+
+        <input id="edit-title" type="text" placeholder="Title" />
+        <input id="edit-desc" type="text" placeholder="Description" />
+        <input id="edit-due" type="datetime-local" />
+        <input id="edit-reminder" type="datetime-local" />
+
+        <div class="modal-buttons">
+            <button onclick="saveEditedTask()" class="primary-btn">Save</button>
+            <button onclick="closeEditModal()" class="secondary-btn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+
+<script>
+window.onload = () => {
+    hideAllPages();
+    showLogin();
+    updateUserNameUI();
+};
+</script>
+<!-- ================= NOTIFICATION POPUP ================= -->
+<div id="notify-box" class="notify hidden">
+    <span id="notify-text"></span>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+
+</body>
+</html>
